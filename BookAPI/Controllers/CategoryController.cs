@@ -1,5 +1,6 @@
 ﻿using BookAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BookAPI.Controllers
 {
@@ -42,7 +43,7 @@ namespace BookAPI.Controllers
             {
                 return NotFound("Kategori Bulunmamaktadır.");
             }
-            return Ok(categories);
+            return Ok($"{categories} adet kategori bulunmaktadır.");
         }
         [HttpDelete]
         public IActionResult Delete(int id)

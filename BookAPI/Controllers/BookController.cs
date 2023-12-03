@@ -44,7 +44,7 @@ namespace BookAPI.Controllers
             {
                 return NotFound("Kitap Bulunmamaktadır.");
             }
-            return Ok(books);
+            return Ok($"{books} adet kitap bulunmaktadır.");
         }
         [HttpDelete]
         public IActionResult Delete(int id)

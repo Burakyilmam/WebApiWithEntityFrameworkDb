@@ -1,5 +1,6 @@
 ﻿using BookAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BookAPI.Controllers
 {
@@ -44,7 +45,7 @@ namespace BookAPI.Controllers
             {
                 return NotFound("Yazar Bulunmamaktadır.");
             }
-            return Ok(writers);
+            return Ok($"{writers} adet yazar bulunmaktadır.");
         }
         [HttpDelete]
         public IActionResult Delete(int id)
