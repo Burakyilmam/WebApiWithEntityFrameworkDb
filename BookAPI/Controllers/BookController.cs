@@ -8,7 +8,7 @@ namespace BookAPI.Controllers
     public class BookController : Controller
     {
         private readonly Context context;
-        public BookController(Context context) 
+        public BookController(Context context)
         {
             this.context = context;
         }
@@ -21,6 +21,17 @@ namespace BookAPI.Controllers
             if (books.Count == 0)
             {
                 return NotFound("Kitap Bulunmamaktadır.");
+            }
+            return Ok(books);
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var books = context.Books.FirstOrDefault(x => x.Id == id);
+
+            if (books == null)
+            {
+                return NotFound($"ID değeri {id} olan kitap bulunamadı.");
             }
             return Ok(books);
         }

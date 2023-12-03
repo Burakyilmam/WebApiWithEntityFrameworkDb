@@ -22,5 +22,16 @@ namespace BookAPI.Controllers
             }
             return Ok(categories);
         }
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var categories = context.Categories.FirstOrDefault(x => x.Id == id);
+
+            if (categories == null)
+            {
+                return NotFound($"ID değeri {id} olan kategori bulunamadı.");
+            }
+            return Ok(categories);
+        }
     }
 }

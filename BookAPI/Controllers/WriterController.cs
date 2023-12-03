@@ -24,6 +24,17 @@ namespace BookAPI.Controllers
             }
             return Ok(writers);
         }
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var writers = context.Writers.FirstOrDefault(x => x.Id == id);
+
+            if (writers == null)
+            {
+                return NotFound($"ID değeri {id} olan yazar bulunamadı.");
+            }
+            return Ok(writers);
+        }
     }
 }
 
