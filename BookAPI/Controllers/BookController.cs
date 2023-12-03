@@ -58,5 +58,17 @@ namespace BookAPI.Controllers
 
             return Ok("Kitap başarıyla eklendi.");
         }
+        [HttpPut]
+        public IActionResult Update(string name,decimal price,int categoryId,int writerId,int id)
+        {
+            var value = context.Books.Find(id);
+            value.Name = name;
+            value.Price = price;
+            value.WriterId = writerId;
+            value.CategoryId = categoryId;
+            context.Update(value);
+            context.SaveChanges();
+            return Ok($"ID değeri {value.Id} olan kitap başarıyla güncellendi.");
+        }
     }
 }

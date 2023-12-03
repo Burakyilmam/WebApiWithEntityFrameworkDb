@@ -56,6 +56,15 @@ namespace BookAPI.Controllers
 
             return Ok("Yazar başarıyla eklendi.");
         }
+        [HttpPut]
+        public IActionResult Update(string name, int id)
+        {
+            var value = context.Writers.Find(id);
+            value.Name = name;
+            context.Update(value);
+            context.SaveChanges();
+            return Ok($"ID değeri {value.Id} olan yazar başarıyla güncellendi.");
+        }
     }
 }
 

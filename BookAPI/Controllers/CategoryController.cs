@@ -54,5 +54,14 @@ namespace BookAPI.Controllers
 
             return Ok("Kategori başarıyla eklendi.");
         }
+        [HttpPut]
+        public IActionResult Update(string name, int id)
+        {
+            var value = context.Categories.Find(id);
+            value.Name = name;
+            context.Update(value);
+            context.SaveChanges();
+            return Ok($"ID değeri {value.Id} olan kategori başarıyla güncellendi.");
+        }
     }
 }
