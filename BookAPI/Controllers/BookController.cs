@@ -13,7 +13,7 @@ namespace BookAPI.Controllers
             this.context = context;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
             var books = context.Books.ToList();
@@ -24,7 +24,7 @@ namespace BookAPI.Controllers
             }
             return Ok(books);
         }
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
         {
             var books = context.Books.FirstOrDefault(x => x.Id == id);
@@ -32,6 +32,17 @@ namespace BookAPI.Controllers
             if (books == null)
             {
                 return NotFound($"ID değeri {id} olan kitap bulunamadı.");
+            }
+            return Ok(books);
+        }
+        [HttpGet("GetCount")]
+        public IActionResult GetCount()
+        {
+            var books = context.Books.Count();
+
+            if (books == 0)
+            {
+                return NotFound("Kitap Bulunmamaktadır.");
             }
             return Ok(books);
         }

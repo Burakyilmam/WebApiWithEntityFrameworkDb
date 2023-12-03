@@ -13,7 +13,7 @@ namespace BookAPI.Controllers
             this.context = context;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
             var writers = context.Writers.ToList();
@@ -24,7 +24,7 @@ namespace BookAPI.Controllers
             }
             return Ok(writers);
         }
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
         {
             var writers = context.Writers.FirstOrDefault(x => x.Id == id);
@@ -32,6 +32,17 @@ namespace BookAPI.Controllers
             if (writers == null)
             {
                 return NotFound($"ID değeri {id} olan yazar bulunamadı.");
+            }
+            return Ok(writers);
+        }
+        [HttpGet("GetCount")]
+        public IActionResult GetCount()
+        {
+            var writers = context.Writers.Count();
+
+            if (writers == 0)
+            {
+                return NotFound("Yazar Bulunmamaktadır.");
             }
             return Ok(writers);
         }

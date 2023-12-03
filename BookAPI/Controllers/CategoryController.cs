@@ -11,7 +11,7 @@ namespace BookAPI.Controllers
         public CategoryController(Context context) {
             this.context = context;
         }
-        [HttpGet]
+        [HttpGet("GetAll")]
         public IActionResult GetAll()
         {
             var categories = context.Categories.ToList();
@@ -22,7 +22,7 @@ namespace BookAPI.Controllers
             }
             return Ok(categories);
         }
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
         {
             var categories = context.Categories.FirstOrDefault(x => x.Id == id);
@@ -30,6 +30,17 @@ namespace BookAPI.Controllers
             if (categories == null)
             {
                 return NotFound($"ID değeri {id} olan kategori bulunamadı.");
+            }
+            return Ok(categories);
+        }
+        [HttpGet("GetCount")]
+        public IActionResult GetCount()
+        {
+            var categories = context.Categories.Count();
+
+            if (categories == 0)
+            {
+                return NotFound("Kategori Bulunmamaktadır.");
             }
             return Ok(categories);
         }
