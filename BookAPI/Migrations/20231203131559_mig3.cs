@@ -4,7 +4,7 @@
 
 namespace BookAPI.Migrations
 {
-    public partial class mig1 : Migration
+    public partial class mig3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,7 +42,8 @@ namespace BookAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    WriterId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,26 +54,8 @@ namespace BookAPI.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BookWriter",
-                columns: table => new
-                {
-                    BookId = table.Column<int>(type: "int", nullable: false),
-                    WriterId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BookWriter", x => new { x.BookId, x.WriterId });
                     table.ForeignKey(
-                        name: "FK_BookWriter_Books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "Books",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BookWriter_Writers_WriterId",
+                        name: "FK_Books_Writers_WriterId",
                         column: x => x.WriterId,
                         principalTable: "Writers",
                         principalColumn: "Id",
@@ -85,24 +68,21 @@ namespace BookAPI.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookWriter_WriterId",
-                table: "BookWriter",
+                name: "IX_Books_WriterId",
+                table: "Books",
                 column: "WriterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BookWriter");
-
-            migrationBuilder.DropTable(
                 name: "Books");
 
             migrationBuilder.DropTable(
-                name: "Writers");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Writers");
         }
     }
 }

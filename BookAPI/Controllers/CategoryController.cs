@@ -41,5 +41,18 @@ namespace BookAPI.Controllers
             context.SaveChanges();
             return Ok($"ID değeri {value.Id} olan kategori başarıyla silindi.");
         }
+        [HttpPost]
+        public IActionResult Add(Category category)
+        {
+            var existingCategory = context.Categories.FirstOrDefault(s => s.Id == category.Id);
+            if (existingCategory != null)
+            {
+                return Conflict($"ID değeri {category.Id} olan kategori zaten mevcut.");
+            }
+            context.Categories.Add(category);
+            context.SaveChanges();
+
+            return Ok("Kategori başarıyla eklendi.");
+        }
     }
 }

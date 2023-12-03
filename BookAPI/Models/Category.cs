@@ -1,4 +1,7 @@
-﻿namespace BookAPI.Models
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Text.Json.Serialization;
+
+namespace BookAPI.Models
 {
     public class Category
     {

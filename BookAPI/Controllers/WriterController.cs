@@ -43,6 +43,19 @@ namespace BookAPI.Controllers
             context.SaveChanges();
             return Ok($"ID değeri {value.Id} olan yazar başarıyla silindi.");
         }
+        [HttpPost]
+        public IActionResult Add(Writer writer)
+        {
+            var existingWriter = context.Writers.FirstOrDefault(s => s.Id == writer.Id);
+            if (existingWriter != null)
+            {
+                return Conflict($"ID değeri {writer.Id} olan yazar zaten mevcut.");
+            }
+            context.Writers.Add(writer);
+            context.SaveChanges();
+
+            return Ok("Yazar başarıyla eklendi.");
+        }
     }
 }
 

@@ -3,6 +3,7 @@ using BookAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookAPI.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20231203131559_mig3")]
+    partial class mig3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,17 +89,21 @@ namespace BookAPI.Migrations
 
             modelBuilder.Entity("BookAPI.Models.Book", b =>
                 {
-                    b.HasOne("BookAPI.Models.Category", null)
+                    b.HasOne("BookAPI.Models.Category", "categories")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookAPI.Models.Writer", null)
+                    b.HasOne("BookAPI.Models.Writer", "Writer")
                         .WithMany("books")
                         .HasForeignKey("WriterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Writer");
+
+                    b.Navigation("categories");
                 });
 
             modelBuilder.Entity("BookAPI.Models.Category", b =>

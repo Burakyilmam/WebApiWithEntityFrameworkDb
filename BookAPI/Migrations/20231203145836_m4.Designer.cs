@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookAPI.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20231203124237_mig1")]
-    partial class mig1
+    [Migration("20231203145836_m4")]
+    partial class m4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,26 +41,16 @@ namespace BookAPI.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("WriterId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("BookAPI.Models.BookWriter", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WriterId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookId", "WriterId");
-
                     b.HasIndex("WriterId");
 
-                    b.ToTable("BookWriter");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("BookAPI.Models.Category", b =>
@@ -105,31 +95,15 @@ namespace BookAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("categories");
-                });
-
-            modelBuilder.Entity("BookAPI.Models.BookWriter", b =>
-                {
-                    b.HasOne("BookAPI.Models.Book", "Book")
-                        .WithMany("BookWriters")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BookAPI.Models.Writer", "Writer")
-                        .WithMany("BookWriters")
+                    b.HasOne("BookAPI.Models.Writer", "writers")
+                        .WithMany("books")
                         .HasForeignKey("WriterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.Navigation("categories");
 
-                    b.Navigation("Writer");
-                });
-
-            modelBuilder.Entity("BookAPI.Models.Book", b =>
-                {
-                    b.Navigation("BookWriters");
+                    b.Navigation("writers");
                 });
 
             modelBuilder.Entity("BookAPI.Models.Category", b =>
@@ -139,7 +113,7 @@ namespace BookAPI.Migrations
 
             modelBuilder.Entity("BookAPI.Models.Writer", b =>
                 {
-                    b.Navigation("BookWriters");
+                    b.Navigation("books");
                 });
 #pragma warning restore 612, 618
         }

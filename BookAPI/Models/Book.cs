@@ -1,4 +1,6 @@
 ﻿using System.Reflection.Metadata;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace BookAPI.Models
 {
@@ -8,7 +10,6 @@ namespace BookAPI.Models
         public string Name { get; set; }
         public decimal Price { get; set; }
         public int CategoryId { get; set; }
-        public Category categories { get; set; }
-        public List<BookWriter> BookWriters { get; set; }
+        public int WriterId { get; set; }
     }
 }

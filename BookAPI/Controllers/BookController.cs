@@ -43,5 +43,20 @@ namespace BookAPI.Controllers
             context.SaveChanges();
             return Ok($"ID değeri {value.Id} olan kitap başarıyla silindi.");
         }
+        [HttpPost]
+        public IActionResult Add(Book book)
+        {
+
+            var existingBook = context.Books.FirstOrDefault(s => s.Id == book.Id);
+            if (existingBook != null)
+            {
+                return Conflict($"ID değeri {book.Id} olan kitap zaten mevcut.");
+            }
+
+            context.Books.Add(book);
+            context.SaveChanges();
+
+            return Ok("Kitap başarıyla eklendi.");
+        }
     }
 }
