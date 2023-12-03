@@ -35,6 +35,14 @@ namespace BookAPI.Controllers
             }
             return Ok(writers);
         }
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var value = context.Writers.Find(id);
+            context.Remove(value);
+            context.SaveChanges();
+            return Ok($"ID değeri {value.Id} olan yazar başarıyla silindi.");
+        }
     }
 }
 
