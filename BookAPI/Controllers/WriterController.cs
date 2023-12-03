@@ -51,9 +51,16 @@ namespace BookAPI.Controllers
         public IActionResult Delete(int id)
         {
             var value = context.Writers.Find(id);
-            context.Remove(value);
-            context.SaveChanges();
-            return Ok($"ID değeri {value.Id} olan yazar başarıyla silindi.");
+            if (value != null)
+            {
+                context.Remove(value);
+                context.SaveChanges();
+                return Ok($"ID değeri {value.Id} olan yazar başarıyla silindi.");
+            }
+            else
+            {
+                return NotFound("Yazar bulunmamaktadır.");
+            }
         }
         [HttpPost]
         public IActionResult Add(Writer writer)

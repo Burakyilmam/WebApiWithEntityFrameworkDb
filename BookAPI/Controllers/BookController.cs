@@ -50,9 +50,17 @@ namespace BookAPI.Controllers
         public IActionResult Delete(int id)
         {
             var value = context.Books.Find(id);
-            context.Remove(value);
-            context.SaveChanges();
-            return Ok($"ID değeri {value.Id} olan kitap başarıyla silindi.");
+            if(value != null)
+            {
+                context.Remove(value);
+                context.SaveChanges();
+                return Ok($"ID değeri {value.Id} olan kitap başarıyla silindi.");
+            }
+            else
+            {
+                return NotFound("Kitap Bulunmamaktadır.");
+            }
+           
         }
         [HttpPost]
         public IActionResult Add(Book book)

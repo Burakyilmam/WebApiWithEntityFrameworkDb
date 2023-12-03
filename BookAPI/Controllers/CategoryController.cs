@@ -49,9 +49,16 @@ namespace BookAPI.Controllers
         public IActionResult Delete(int id)
         {
             var value = context.Categories.Find(id);
-            context.Remove(value);
-            context.SaveChanges();
-            return Ok($"ID değeri {value.Id} olan kategori başarıyla silindi.");
+            if (value != null)
+            {
+                context.Remove(value);
+                context.SaveChanges();
+                return Ok($"ID değeri {value.Id} olan kategori başarıyla silindi.");
+            }
+            else
+            {
+                return NotFound("Kategori bulunmamaktadır.");
+            }
         }
         [HttpPost]
         public IActionResult Add(Category category)
