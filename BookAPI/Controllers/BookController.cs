@@ -47,7 +47,7 @@ namespace BookAPI.Controllers
             return Ok(books.OrderBy(x => x.Price).Take(5));
         }
         [HttpGet("GetBetweenPrice")]
-        public IActionResult GetBetweenPrice([FromQuery] int subPrice, [FromQuery] int supPrice)
+        public IActionResult GetBetweenPrice(int subPrice,int supPrice)
         {
             var books = context.Books.ToList();
 
@@ -68,7 +68,7 @@ namespace BookAPI.Controllers
 
         }
         [HttpGet("GetByPrice")]
-        public IActionResult GetByPrice([FromQuery] int price)
+        public IActionResult GetByPrice(int price)
         {
             var books = context.Books.ToList();
 
