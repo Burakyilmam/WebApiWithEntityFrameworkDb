@@ -34,6 +34,96 @@ namespace BookAPI.Controllers
             }
             return Ok(categories);
         }
+        [HttpGet("GetByName")]
+        public IActionResult GetByName(string name)
+        {
+            var categories = context.Categories.ToList();
+
+            if (categories.Count == 0)
+            {
+                return NotFound("Kategori Bulunmamaktadır.");
+            }
+            
+            var query = categories.Where(x=>x.Name == name);
+
+            if(query.Count() == 0)
+            {
+                return NotFound("Aradığınız isimde kategori bulunmamaktadır.");
+            }
+            else
+            {
+                return Ok(query);
+            }
+        }
+        [HttpGet("GetByConstainName")]
+        public IActionResult GetByConstainName(string name)
+        {
+            var categories = context.Categories.ToList();
+
+            if (categories.Count == 0)
+            {
+                return NotFound("Kategori Bulunmamaktadır.");
+            }
+
+            var query = categories.Where(x=>x.Name.Contains(name));
+
+            if (query.Count() == 0)
+            {
+                return NotFound("Aradığınız isimde kategori bulunmamaktadır.");
+            }
+            else
+            {
+                return Ok(query);
+            }
+        }
+        [HttpGet("GetTop5")]
+        public IActionResult GetTop5()
+        {
+            var categories = context.Categories.ToList();
+
+            if (categories.Count == 0)
+            {
+                return NotFound("Kategori Bulunmamaktadır.");
+            }
+
+            return Ok(categories.OrderByDescending(x=>x.Name).Take(5));
+        }
+        [HttpGet("GetLast5")]
+        public IActionResult GetLast5()
+        {
+            var categories = context.Categories.ToList();
+
+            if (categories.Count == 0)
+            {
+                return NotFound("Kategori Bulunmamaktadır.");
+            }
+
+            return Ok(categories.OrderBy(x => x.Name).Take(5));
+        }
+        [HttpGet("GetAllSorted")]
+        public IActionResult GetAllSorted()
+        {
+            var categories = context.Categories.ToList();
+
+            if (categories.Count == 0)
+            {
+                return NotFound("Kategori Bulunmamaktadır.");
+            }
+
+            return Ok(categories.OrderBy(x => x.Name));
+        }
+        [HttpGet("GetAllSortedDescending")]
+        public IActionResult GetAllSortedDescending()
+        {
+            var categories = context.Categories.ToList();
+
+            if (categories.Count == 0)
+            {
+                return NotFound("Kategori Bulunmamaktadır.");
+            }
+
+            return Ok(categories.OrderByDescending(x => x.Name));
+        }
         [HttpGet("GetCount")]
         public IActionResult GetCount()
         {
