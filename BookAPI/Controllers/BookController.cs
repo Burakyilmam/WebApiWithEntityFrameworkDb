@@ -24,6 +24,70 @@ namespace BookAPI.Controllers
             }
             return Ok(books);
         }
+        [HttpGet("PriceTop5")]
+        public IActionResult PriceTop5()
+        {
+            var books = context.Books.ToList();
+
+            if (books.Count == 0)
+            {
+                return NotFound("Kitap Bulunmamaktadır.");
+            }
+            return Ok(books.OrderByDescending(x=>x.Price).Take(5));
+        }
+        [HttpGet("PriceLast5")]
+        public IActionResult PriceLast5()
+        {
+            var books = context.Books.ToList();
+
+            if (books.Count == 0)
+            {
+                return NotFound("Kitap Bulunmamaktadır.");
+            }
+            return Ok(books.OrderBy(x => x.Price).Take(5));
+        }
+        [HttpGet("GetBetweenPrice")]
+        public IActionResult GetBetweenPrice([FromQuery] int subPrice, [FromQuery] int supPrice)
+        {
+            var books = context.Books.ToList();
+
+            if (books.Count == 0)
+            {
+                return NotFound("Kitap Bulunmamaktadır.");
+            }
+            var query = books.Where(x => (x.Price >= subPrice) && (x.Price <= supPrice)).ToList();
+
+            if (query.Count == 0)
+            {
+                return NotFound("Aradığınız Fiyat Aralığında Kitap Bulunmamaktadır.");
+            }
+            else
+            {
+                return Ok(query);
+            }
+
+        }
+        [HttpGet("GetByPrice")]
+        public IActionResult GetByPrice([FromQuery] int price)
+        {
+            var books = context.Books.ToList();
+
+            if (books.Count == 0)
+            {
+                return NotFound("Kitap Bulunmamaktadır.");
+            }
+
+            var query = books.Where(x => x.Price == price).ToList();
+
+            if (query.Count == 0)
+            {
+                return NotFound("Aradığnız Fiyatta Kitap Bulunmamaktadır.");
+            }
+            else
+            {
+                return Ok(query);
+            }        
+        }
         [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
         {
