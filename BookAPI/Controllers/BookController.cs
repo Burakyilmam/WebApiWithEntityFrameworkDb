@@ -199,8 +199,17 @@ namespace BookAPI.Controllers
         public IActionResult Update(string name,decimal price,int categoryId,int writerId,int id)
         {
             var value = context.Books.Find(id);
-            
-            if(value != null )
+            var existcategoryId = context.Books.FirstOrDefault(x => x.CategoryId == categoryId);
+            var existwriterId = context.Books.FirstOrDefault(x => x.WriterId == writerId);
+            if (existcategoryId == null)
+            {
+                return Conflict($"Kategori bulunmamaktadır.");
+            }
+            if (existwriterId == null)
+            {
+                return Conflict($"Yazar bulunmamaktadır.");
+            }
+            if (value != null )
             {
                 value.Name = name;
                 value.Price = price;
@@ -210,6 +219,7 @@ namespace BookAPI.Controllers
                 context.SaveChanges();
                 return Ok($"ID değeri {value.Id} olan kitap başarıyla güncellendi.");
             }
+
             else
             {
                 return Conflict($"ID değeri {id} olan kitap bulunmamaktadır.");
