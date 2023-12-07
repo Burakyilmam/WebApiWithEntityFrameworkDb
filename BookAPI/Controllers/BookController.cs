@@ -1,5 +1,7 @@
 ﻿using BookAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BookAPI.Controllers
 {
@@ -87,6 +89,47 @@ namespace BookAPI.Controllers
             {
                 return Ok(query);
             }        
+        }
+        [HttpGet("GetByCategoryId")]
+        public IActionResult GetByCategoryId(int Id)
+        {
+            var books = context.Books.ToList();
+
+            if (books.Count == 0)
+            {
+                return NotFound("Kitap Bulunmamaktadır.");
+            }
+
+            var query = books.Where(x => x.CategoryId == Id).ToList();
+
+            if (query.Count == 0)
+            {
+                return NotFound("Aradığnız Kategoride Kitap Bulunmamaktadır.");
+            }
+            else
+            {
+                return Ok(query);
+            }
+        }
+        [HttpGet("GetByCategoryName")]
+        public IActionResult GetByCategoryName(string name)
+        {
+            var book = context.Books.ToList();
+            var category = context.Categories.FirstOrDefault(c => c.Name == name);
+
+            if (category == null)
+            {
+                return NotFound("Aradığınız kategori bulunmamaktadır.");
+            }
+            if(category.Books == null)
+            {
+                return NotFound("Aradığınız kategoride kitap bulunmamaktadır.");
+            }    
+            else
+            {
+                var query = book.Where(x => x.CategoryId == category.Id);
+                return Ok(query);
+            }
         }
         [HttpGet("GetById/{id}")]
         public IActionResult GetById(int id)
