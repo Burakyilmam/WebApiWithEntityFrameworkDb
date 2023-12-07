@@ -165,7 +165,7 @@ namespace BookAPI.Controllers
             }
             else
             {
-                return NotFound("Kitap Bulunmamaktadır.");
+                return NotFound("Kitap bulunmamaktadır.");
             }
            
         }
