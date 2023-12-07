@@ -178,23 +178,42 @@ namespace BookAPI.Controllers
             {
                 return Conflict($"ID değeri {book.Id} olan kitap zaten mevcut.");
             }
-
-            context.Books.Add(book);
-            context.SaveChanges();
-
-            return Ok("Kitap başarıyla eklendi.");
+            var categoryId = context.Books.FirstOrDefault(x=>x.CategoryId == book.CategoryId);
+            var writerId = context.Books.FirstOrDefault(x => x.WriterId == book.WriterId);
+            if(categoryId == null)
+            {
+                return Conflict($"Kategori bulunmamaktadır.");
+            }
+            else if (writerId == null)
+            {
+                return Conflict($"Yazar bulunmamaktadır.");
+            }
+            else
+            {
+                context.Books.Add(book);
+                context.SaveChanges();
+                return Ok("Kitap başarıyla eklendi.");
+            }
         }
         [HttpPut]
         public IActionResult Update(string name,decimal price,int categoryId,int writerId,int id)
         {
             var value = context.Books.Find(id);
-            value.Name = name;
-            value.Price = price;
-            value.WriterId = writerId;
-            value.CategoryId = categoryId;
-            context.Update(value);
-            context.SaveChanges();
-            return Ok($"ID değeri {value.Id} olan kitap başarıyla güncellendi.");
+            
+            if(value != null )
+            {
+                value.Name = name;
+                value.Price = price;
+                value.WriterId = writerId;
+                value.CategoryId = categoryId;
+                context.Update(value);
+                context.SaveChanges();
+                return Ok($"ID değeri {value.Id} olan kitap başarıyla güncellendi.");
+            }
+            else
+            {
+                return Conflict($"ID değeri {id} olan kitap bulunmamaktadır.");
+            }
         }
     }
 }
