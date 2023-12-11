@@ -193,9 +193,13 @@ namespace BookAPI.Controllers
             {
                 return Conflict($"ID değeri {book.Id} olan kitap zaten mevcut.");
             }
-            var categoryId = context.Books.FirstOrDefault(x=>x.CategoryId == book.CategoryId);
-            var writerId = context.Books.FirstOrDefault(x => x.WriterId == book.WriterId);
-            if(categoryId == null)
+            var categoryId = context.Categories.FirstOrDefault(x=>x.Id == book.CategoryId);
+            var writerId = context.Writers.FirstOrDefault(x => x.Id == book.WriterId);
+            if (categoryId == null && writerId == null)
+            {
+                return Conflict($"Kategori ve yazar bulunmamaktadır.");
+            }
+            if (categoryId == null)
             {
                 return Conflict($"Kategori bulunmamaktadır.");
             }
