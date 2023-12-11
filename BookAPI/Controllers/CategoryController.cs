@@ -135,8 +135,8 @@ namespace BookAPI.Controllers
             }
             return Ok($"{categories} adet kategori bulunmaktadır.");
         }
-        [HttpDelete]
-        public IActionResult Delete(int id)
+        [HttpDelete("DeleteById")]
+        public IActionResult DeleteById(int id)
         {
             var value = context.Categories.Find(id);
             if (value != null)
@@ -144,6 +144,22 @@ namespace BookAPI.Controllers
                 context.Remove(value);
                 context.SaveChanges();
                 return Ok($"ID değeri {value.Id} olan kategori başarıyla silindi.");
+            }
+            else
+            {
+                return NotFound("Kategori bulunmamaktadır.");
+            }
+
+        }
+        [HttpDelete("DeleteAll")]
+        public IActionResult DeleteAll()
+        {
+            var categories = context.Categories.ToList();
+            if (categories != null)
+            {
+                context.RemoveRange(categories);
+                context.SaveChanges();
+                return Ok($"Kategoriler başarıyla silindi.");
             }
             else
             {
@@ -166,11 +182,18 @@ namespace BookAPI.Controllers
         [HttpPut]
         public IActionResult Update(string name, int id)
         {
-            var value = context.Categories.Find(id);
-            value.Name = name;
-            context.Update(value);
-            context.SaveChanges();
-            return Ok($"ID değeri {value.Id} olan kategori başarıyla güncellendi.");
+            var categoryId = context.Categories.Find(id);
+            if (categoryId != null)
+            {               
+                categoryId.Name = name;
+                context.Update(categoryId);
+                context.SaveChanges();
+                return Ok($"ID değeri {categoryId.Id} olan kategori başarıyla güncellendi.");
+            }
+            else
+            {
+                return Conflict($"ID değeri {id} olan kategori bulunmamaktadır.");
+            }
         }
     }
 }
