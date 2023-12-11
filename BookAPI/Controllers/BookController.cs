@@ -218,8 +218,12 @@ namespace BookAPI.Controllers
         public IActionResult Update(string name,decimal price,int categoryId,int writerId,int id)
         {
             var value = context.Books.Find(id);
-            var existcategoryId = context.Books.FirstOrDefault(x => x.CategoryId == categoryId);
-            var existwriterId = context.Books.FirstOrDefault(x => x.WriterId == writerId);
+            var existcategoryId = context.Categories.FirstOrDefault(x => x.Id == categoryId);
+            var existwriterId = context.Writers.FirstOrDefault(x => x.Id == writerId);
+            if (existcategoryId == null && existwriterId == null)
+            {
+                return Conflict($"Kategori ve yazar bulunmamaktadır.");
+            }
             if (existcategoryId == null)
             {
                 return Conflict($"Kategori bulunmamaktadır.");
