@@ -153,8 +153,8 @@ namespace BookAPI.Controllers
             }
             return Ok($"{books} adet kitap bulunmaktadır.");
         }
-        [HttpDelete]
-        public IActionResult Delete(int id)
+        [HttpDelete("DeleteById")]
+        public IActionResult DeleteById(int id)
         {
             var value = context.Books.Find(id);
             if(value != null)
@@ -168,6 +168,21 @@ namespace BookAPI.Controllers
                 return NotFound("Kitap bulunmamaktadır.");
             }
            
+        }
+        [HttpDelete("DeleteAll")]
+        public IActionResult DeleteAll()
+        {
+            var books = context.Books.ToList();
+            if (books != null)
+            {
+                context.RemoveRange(books);
+                context.SaveChanges();
+                return Ok($"kitaplar başarıyla silindi.");
+            }
+            else
+            {
+                return NotFound("Kitap bulunmamaktadır.");
+            }
         }
         [HttpPost]
         public IActionResult Add(Book book)
